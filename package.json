@@ -1,0 +1,27 @@
+{
+  "name": "sssh-btc-wallet-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @sssh-btc/shared && concurrently -n indexer,prover,web -c cyan,green,yellow \"npm run dev -w @sssh-btc/indexer\" \"npm run dev -w @sssh-btc/prover\" \"npm run dev -w @sssh-btc/web\"",
+    "dev:web": "npm run dev -w @sssh-btc/web",
+    "dev:indexer": "npm run dev -w @sssh-btc/indexer",
+    "dev:prover": "npm run dev -w @sssh-btc/prover",
+    "prebuild": "npm run build -w @sssh-btc/shared",
+    "build": "npm run build --workspaces",
+    "pretest": "npm run build -w @sssh-btc/shared",
+    "test": "npm run test --workspaces",
+    "pretypecheck": "npm run build -w @sssh-btc/shared",
+    "typecheck": "npm run typecheck --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.2"
+  }
+}

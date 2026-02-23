@@ -1,0 +1,19 @@
+{
+  "name": "@sssh-btc/circuits",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile:transfer": "circom transfer.circom --r1cs --wasm --sym -o build",
+    "compile:withdraw": "circom withdraw.circom --r1cs --wasm --sym -o build",
+    "compile:request": "circom request_claim.circom --r1cs --wasm --sym -o build",
+    "compile": "npm run compile:transfer && npm run compile:withdraw && npm run compile:request",
+    "setup:ptau": "npx snarkjs powersoftau new bn128 14 build/pot14_0000.ptau -v && npx snarkjs powersoftau contribute build/pot14_0000.ptau build/pot14_0001.ptau --name='sssh-btc' -v -e='sssh-btc-hackathon' && npx snarkjs powersoftau prepare phase2 build/pot14_0001.ptau build/pot14_final.ptau -v",
+    "setup:transfer": "npx snarkjs groth16 setup build/transfer.r1cs build/pot14_final.ptau build/transfer_0000.zkey && npx snarkjs zkey contribute build/transfer_0000.zkey build/transfer_final.zkey --name='sssh-btc' -v -e='sssh-btc-transfer' && npx snarkjs zkey export verificationkey build/transfer_final.zkey build/transfer_verification_key.json",
+    "setup:withdraw": "npx snarkjs groth16 setup build/withdraw.r1cs build/pot14_final.ptau build/withdraw_0000.zkey && npx snarkjs zkey contribute build/withdraw_0000.zkey build/withdraw_final.zkey --name='sssh-btc' -v -e='sssh-btc-withdraw' && npx snarkjs zkey export verificationkey build/withdraw_final.zkey build/withdraw_verification_key.json",
+    "setup": "npm run setup:ptau && npm run setup:transfer && npm run setup:withdraw"
+  },
+  "dependencies": {
+    "circomlib": "^2.0.5",
+    "snarkjs": "^0.7.5"
+  }
+}

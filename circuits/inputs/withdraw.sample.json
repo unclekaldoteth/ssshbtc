@@ -1,0 +1,11 @@
+{
+  "root": "987654321",
+  "asset": "2222",
+  "senderSecret": "9001",
+  "inOwner": "111",
+  "inAmount": "500",
+  "inBlinding": "33",
+  "recipient": "777",
+  "withdrawAmount": "480",
+  "fee": "20"
+}

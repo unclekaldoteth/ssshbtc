@@ -1,0 +1,12 @@
+{
+  "root": "123456789",
+  "asset": "2222",
+  "senderSecret": "9001",
+  "inOwner": ["111", "111"],
+  "inAmount": ["1200", "300"],
+  "inBlinding": ["77", "88"],
+  "outOwner": ["555", "111"],
+  "outAmount": ["1000", "450"],
+  "outBlinding": ["66", "44"],
+  "fee": "50"
+}
