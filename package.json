@@ -19,6 +19,9 @@
     "pretypecheck": "npm run build -w @sssh-btc/shared",
     "typecheck": "npm run typecheck --workspaces"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "concurrently": "^9.1.2",

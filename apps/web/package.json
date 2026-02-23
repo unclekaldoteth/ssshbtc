@@ -10,6 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --import tsx --test lib/wallet-validation.test.ts"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@sssh-btc/shared": "file:../../packages/shared",
     "next": "15.1.2",
@@ -18,7 +21,9 @@
     "swr": "^2.3.0"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2"
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.7.2"
   }
 }
