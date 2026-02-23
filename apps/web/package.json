@@ -11,7 +11,7 @@
     "test": "node --import tsx --test lib/wallet-validation.test.ts"
   },
   "dependencies": {
-    "@sssh-btc/shared": "0.1.0",
+    "@sssh-btc/shared": "file:../../packages/shared",
     "next": "15.1.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",

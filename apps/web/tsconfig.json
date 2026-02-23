@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "lib": [
@@ -18,6 +19,11 @@
         "name": "next"
       }
     ],
+    "paths": {
+      "@sssh-btc/shared": [
+        "../../packages/shared/src/index.web.ts"
+      ]
+    },
     "esModuleInterop": true
   },
   "include": [
