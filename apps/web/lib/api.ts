@@ -14,8 +14,40 @@ import type {
   WithdrawProofRequest,
 } from "@sssh-btc/shared";
 
-const INDEXER_URL = process.env.NEXT_PUBLIC_INDEXER_URL ?? "http://localhost:4100";
-const PROVER_URL = process.env.NEXT_PUBLIC_PROVER_URL ?? "http://localhost:4200";
+function normalizeServiceBaseUrl(
+  rawValue: string | undefined,
+  fallback: string,
+  envName: string
+): string {
+  const trimmed = rawValue?.trim();
+  const candidate = trimmed
+    ? /^(https?:)?\/\//i.test(trimmed)
+      ? trimmed
+      : `https://${trimmed}`
+    : fallback;
+
+  try {
+    const url = new URL(candidate);
+    return url.origin;
+  } catch {
+    if (typeof window !== "undefined") {
+      // Surface misconfigured env vars in the browser console without breaking local fallback.
+      console.warn(`Invalid ${envName} value "${rawValue}". Falling back to ${fallback}.`);
+    }
+    return fallback;
+  }
+}
+
+const INDEXER_URL = normalizeServiceBaseUrl(
+  process.env.NEXT_PUBLIC_INDEXER_URL,
+  "http://localhost:4100",
+  "NEXT_PUBLIC_INDEXER_URL"
+);
+const PROVER_URL = normalizeServiceBaseUrl(
+  process.env.NEXT_PUBLIC_PROVER_URL,
+  "http://localhost:4200",
+  "NEXT_PUBLIC_PROVER_URL"
+);
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
@@ -29,6 +61,12 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 
   if (!response.ok) {
     const body = await response.text();
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType.includes("text/html")) {
+      throw new Error(
+        `${response.status} ${response.statusText}: backend URL is misconfigured and returned HTML instead of JSON (${url})`
+      );
+    }
     throw new Error(`${response.status} ${response.statusText}: ${body}`);
   }
 
@@ -36,11 +74,11 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export function getIndexerUrl(path: string): string {
-  return `${INDEXER_URL}${path}`;
+  return new URL(path, `${INDEXER_URL}/`).toString();
 }
 
 export function getProverUrl(path: string): string {
-  return `${PROVER_URL}${path}`;
+  return new URL(path, `${PROVER_URL}/`).toString();
 }
 
 export async function getTreeRoot(): Promise<{ root: string; commitmentCount: number }> {
